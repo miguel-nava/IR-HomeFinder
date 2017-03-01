@@ -17,3 +17,4 @@ class ZcrawlItem(scrapy.Item):
     sqft = scrapy.Field()
     address = scrapy.Field()
     link = scrapy.Field()
+    city = scrapy.Field()

@@ -5,7 +5,8 @@ from ZCrawl.items import ZcrawlItem
 
 class RESpider(Spider):
     name = "ZCrawler"
-    start_urls = ["https://www.trulia.com/TX/Houston/"]
+    city = "Dallas, TX"
+    start_urls = ["https://www.trulia.com/TX/Dallas/"]
 
     def parse(self, response):
 
@@ -20,6 +21,7 @@ class RESpider(Spider):
                 .extract()
             item["address"] = property.xpath('div/a/div/div/div/p/text()').extract()
             item["link"] = property.xpath('div/a/@href').extract()
+            item["city"] = RESpider.city
             yield item
 
         next_Page = response.xpath('//a[contains(@aria-label, "Next")]/@href').extract()
