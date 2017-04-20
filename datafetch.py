@@ -63,7 +63,7 @@ def main(argv):
             zip_arg = arg
 
     # create url to curl
-    link = "'" + createURL(city_arg, bed_arg, bath_arg, zip_arg) + "'"
+    link = createURL(city_arg, bed_arg, bath_arg, zip_arg)
     conn = urlopen(link)
     results = simplejson.load(conn)
     print results
