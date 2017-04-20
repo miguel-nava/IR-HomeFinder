@@ -2,27 +2,23 @@
 import sys
 import getopt
 import subprocess
+from urllib2 import *
+import simplejson
 
 # ----------- Usage -----------
-# python datafetch.py -c <city> -s <state> -b <bedroom> -a <bathroom> -z <zipcode>
+# python datafetch.py -c <city> -b <bedroom> -a <bathroom> -z <zipcode>
 # ex: python datafetch.py -c "San Antonio" -s "TX" -b "3" -a "2" -z "123123"
 #     python datafetch.py -c "San Antonio" -s "TX"
 #     etc...
 
-def createURL(city, state, bedct, bathct, zipcode):
+def createURL(city, bedct, bathct, zipcode):
     query_list = []
 
     #example URL: http://localhost:8983/solr/IRHomeFinder/select?indent=on&q=city:Houston,%20TX%20% 20AND%20 bathroom:3ba% 20AND%20 Zip_Code:77089 &rows=500&wt=json
     #example URL: http://localhost:8983/solr/IRHomeFinder/select?indent=on&q=    city:%22San%20Antonio,%20TX%22    %20AND%20   bedroom:2bd    &wt=json
 
-    if city is not None and state is not None:
-        city_query = "city:" + "%22" + city.replace(" ", "%20") + ",%20" + state + "%22"
-        query_list.append(city_query)
-    if city is not None and state is None:
+    if city is not None:
         city_query = "city:" + "%22" + city.replace(" ", "%20") + "%22"
-        query_list.append(city_query)
-    if city is None and state is not None:
-        city_query = "city:" + "%22" + state + "%22"
         query_list.append(city_query)
     if bedct is not None:
         bed_query = "bedroom:" + bedct + "bd"
@@ -45,23 +41,20 @@ def createURL(city, state, bedct, bathct, zipcode):
 
 def main(argv):
     city_arg = None
-    state_arg = None
     bed_arg = None
     bath_arg = None
     zip_arg = None
     try:
-        opts, args = getopt.getopt(argv,"hc:s:b:a:z:",["carg=","sarg=", "barg=, aarg=, zarg="])
+        opts, args = getopt.getopt(argv,"hc:b:a:z:",["carg=", "barg=, aarg=, zarg="])
     except getopt.GetoptError:
-        print 'datafetch.py -c <city> -s <state> -b <bedroom> -a <bathroom> -z<zipcode>'
+        print 'datafetch.py -c <city> -b <bedroom> -a <bathroom> -z<zipcode>'
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print 'datafetch.py -c <city> -s <state> -b <bedroom> -a <bathroom> -z<zipcode>'
+            print 'datafetch.py -c <city> -b <bedroom> -a <bathroom> -z<zipcode>'
             sys.exit()
         elif opt in ("-c", "--carg"):
             city_arg = arg
-        elif opt in ("-s", "--sarg"):
-            state_arg = arg
         elif opt in ("-b", "--barg"):
             bed_arg = arg
         elif opt in ("-a", "--aarg"):
@@ -70,13 +63,16 @@ def main(argv):
             zip_arg = arg
 
     # create url to curl
-    link = "'" + createURL(city_arg, state_arg, bed_arg, bath_arg, zip_arg) + "'"
+    link = "'" + createURL(city_arg, bed_arg, bath_arg, zip_arg) + "'"
+    conn = urlopen(link)
+    results = simplejson.load(conn)
+    print results
 
     # Get output from curl - not working.
     # output = subprocess.check_output(["curl", link])
     # print output
 
-    print createURL(city_arg, state_arg, bed_arg, bath_arg, zip_arg)
+    print createURL(city_arg, bed_arg, bath_arg, zip_arg)
 
 if __name__ == "__main__":
    main(sys.argv[1:])
