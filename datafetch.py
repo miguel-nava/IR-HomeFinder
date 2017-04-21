@@ -36,7 +36,7 @@ def createURL(city, bedct, bathct, zipcode):
 
     #This variable will probably need to change based off what port you are using, and name of core
     domain = "http://localhost:8983/solr/IRHomeFinder/select?indent=on&q="
-    ending = "&wt=json"
+    ending = "&wt=json&omitHeader=true"
     final_url = domain + query + ending
     return final_url
 
@@ -68,7 +68,9 @@ def main(argv):
     conn = urlopen(link)
     results = simplejson.load(conn)
     print ''
-    print results
+    response = results['response']
+    docs = response['docs']
+    print docs
 
     # Get output from curl - not working.
     # output = subprocess.check_output(["curl", link])
