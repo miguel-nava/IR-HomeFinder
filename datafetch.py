@@ -6,9 +6,10 @@ from urllib2 import *
 import simplejson
 
 # ----------- Usage -----------
+# pip install simplejson
 # python datafetch.py -c <city> -b <bedroom> -a <bathroom> -z <zipcode>
-# ex: python datafetch.py -c "San Antonio" -s "TX" -b "3" -a "2" -z "123123"
-#     python datafetch.py -c "San Antonio" -s "TX"
+# ex: python datafetch.py -c "San Antonio" -b "3" -a "2" -z "123123"
+#     python datafetch.py -c "San Antonio"
 #     etc...
 
 def createURL(city, bedct, bathct, zipcode):
@@ -66,12 +67,13 @@ def main(argv):
     link = createURL(city_arg, bed_arg, bath_arg, zip_arg)
     conn = urlopen(link)
     results = simplejson.load(conn)
+    print ''
     print results
 
     # Get output from curl - not working.
     # output = subprocess.check_output(["curl", link])
     # print output
-
+    print ''
     print createURL(city_arg, bed_arg, bath_arg, zip_arg)
 
 if __name__ == "__main__":
