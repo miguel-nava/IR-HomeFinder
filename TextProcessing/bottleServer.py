@@ -1,5 +1,5 @@
 from bottle import route, run, template
-import datafetch
+from datafetch import createURL
 
 @route('/hello/<name>')
 def index(name):
@@ -11,10 +11,16 @@ def mainPage():
 
 @route('/string')
 def requestString():
+	print('request for strig')
 	return "You have requested the string"
 
 @route('/request/<city>/<zip>/<bed>/<bath>')
-def getHouse(city, zip, bed, bath):
-	return template('You are requesting a house in {{city}}, {{zip}}. With {{bed}} bedrooms and {{bath}} baths.', city = city, zip = zip, bed = bed, bath = bath)
+def getHouse(city, zipC, bed, bath):
+	return createURL(city,bed,bath,zipC)
+	#return template('You are requesting a house in {{city}}, {{zip}}. With {{bed}} bedrooms and {{bath}} baths.', city = city, zip = zipC, bed = bed, bath = bath)
 
+<<<<<<< HEAD
 run(host='0.0.0.0', port=80)
+=======
+run(host='localhost', port=80)
+>>>>>>> afa406315796793f9e26111eb89b6bb2a8ff41ab
