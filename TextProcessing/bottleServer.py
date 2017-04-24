@@ -17,4 +17,4 @@ def requestString():
 def getHouse(city, zip, bed, bath):
 	return template('You are requesting a house in {{city}}, {{zip}}. With {{bed}} bedrooms and {{bath}} baths.', city = city, zip = zip, bed = bed, bath = bath)
 
-run(host='localhost', port=65530)
+run(host='0.0.0.0', port=80)
