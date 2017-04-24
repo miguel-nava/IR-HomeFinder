@@ -1,20 +1,13 @@
 from bottle import route, run, template
-import datafetch
-
-@route('/hello/<name>')
-def index(name):
-	return template('<b>Hello {{name}}</b>!', name=name)
+from datafetch import createURL
 
 @route('/')
 def mainPage():
-	return template('<b>You are connected to the server {{name}}</b>', name = 'Muhammad');
+	return template('You have connected to the server')
 
-@route('/string')
-def requestString():
-	return "You have requested the string"
+@route('/request/<city>/<zipC>/<bed>/<bath>')
+def getHouses(city, zipC, bed, bath):
+	return createURL(city,bed,bath,zipC)
 
-@route('/request/<city>/<zip>/<bed>/<bath>')
-def getHouse(city, zip, bed, bath):
-	return template('You are requesting a house in {{city}}, {{zip}}. With {{bed}} bedrooms and {{bath}} baths.', city = city, zip = zip, bed = bed, bath = bath)
 
-run(host='localhost', port=65530)
+run(host='localhost', port=8080)
