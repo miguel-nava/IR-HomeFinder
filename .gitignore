@@ -1,1 +1,6 @@
 *.pyc
+*.log
+*.out
+*.pid
+*.pid.lock
+ip-*
