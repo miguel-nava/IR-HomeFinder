@@ -18,16 +18,16 @@ def createURL(city, bedct, bathct, zipcode):
     #example URL: http://localhost:8983/solr/IRHomeFinder/select?indent=on&q=city:Houston,%20TX%20% 20AND%20 bathroom:3ba% 20AND%20 Zip_Code:77089 &rows=500&wt=json
     #example URL: http://localhost:8983/solr/IRHomeFinder/select?indent=on&q=    city:%22San%20Antonio,%20TX%22    %20AND%20   bedroom:2bd    &wt=json
 
-    if city is not "-1":
+    if city != "-1":
         city_query = "city:" + "%22" + city.replace(" ", "%20") + "%22"
         query_list.append(city_query)
-    if bedct is not "-1":
+    if bedct != "-1":
         bed_query = "bedroom:" + bedct + "bd"
         query_list.append(bed_query)
-    if bathct is not "-1":
+    if bathct != "-1":
         bath_query = "bathroom:" + bathct + "ba"
         query_list.append(bath_query)
-    if zipcode is not "-1":
+    if zipcode != "-1":
         zip_query = "Zip_Code:" + zipcode
         query_list.append(zip_query)
 
@@ -35,10 +35,10 @@ def createURL(city, bedct, bathct, zipcode):
     query = and_sep.join(query_list)
 
     #This variable will probably need to change based off what port you are using, and name of core
-    domain = "http://localhost:8983/solr/IRHomeFinder/select?indent=on&q="
-    ending = "&wt=json&omitHeader=true"
+    domain = "http://localhost:8983/solr/RealEstateApp/select?indent=on&q="
+    ending = "&rows=30000&wt=json&omitHeader=true"
     final_url = domain + query + ending
-
+    print final_url
     conn = urlopen(final_url)
     results = simplejson.load(conn)
     # print ''
